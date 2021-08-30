@@ -10,5 +10,9 @@ html(lang="en")
         header
             h1 Zoom
         main
+            dev#welcome
+                form
+                    input(placeholder="root name", required, type="text")
+                    button Enter Room
         script(src="/socket.io/socket.io.js")
         script(src="/public/js/app.js")

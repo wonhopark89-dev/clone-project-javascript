@@ -20,6 +20,13 @@ const wsServer = SocketIO(httpServer);
 
 wsServer.on('connection', (socket) => {
   console.log(socket);
+
+  socket.on('enter_room', (msg, done) => {
+    console.log(msg);
+    setTimeout(() => {
+      done();
+    }, 2000);
+  });
 });
 
 // function onSocketClose() {
