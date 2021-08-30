@@ -1,5 +1,6 @@
 import http from 'http';
-import WebSocket from 'ws';
+import SocketIO from 'socket.io';
+// import WebSocket from 'ws';
 import express from 'express';
 
 const app = express();
@@ -14,31 +15,35 @@ app.get('/*', (req, res) => res.redirect('/')); // only use one directory
 
 const handleListen = () => console.log(`Listening on http://localhost:3000`);
 
-const server = http.createServer(app); // http server, 필수사항 아님
-const wss = new WebSocket.Server({ server }); // socket, 같은 포트 사용하려고,
+const httpServer = http.createServer(app); // http server, 필수사항 아님
+const wsServer = SocketIO(httpServer);
 
-function onSocketClose() {
-  console.log('Disconnected from the Browser ❌');
-}
-
-const sockets = [];
-
-wss.on('connection', (socket) => {
-  sockets.push(socket);
-  socket['nickname'] = 'Anon';
-  console.log('Connected to Broswer ✅');
-  socket.on('close', onSocketClose);
-  socket.on('message', (msg) => {
-    const message = JSON.parse(msg);
-    switch (message.type) {
-      case 'new_message':
-        sockets.forEach((aSocket) => aSocket.send(`${socket.nickname}: ${message.payload}`));
-        break;
-      case 'nickname':
-        socket['nickname'] = message.payload;
-        break;
-    }
-  });
+wsServer.on('connection', (socket) => {
+  console.log(socket);
 });
 
-server.listen(3000, handleListen);
+// function onSocketClose() {
+//   console.log('Disconnected from the Browser ❌');
+// }
+
+// const wss = new WebSocket.Server({ server }); // socket, 같은 포트 사용하려고,
+// const sockets = [];
+// wss.on('connection', (socket) => {
+//   sockets.push(socket);
+//   socket['nickname'] = 'Anon';
+//   console.log('Connected to Broswer ✅');
+//   socket.on('close', onSocketClose);
+//   socket.on('message', (msg) => {
+//     const message = JSON.parse(msg);
+//     switch (message.type) {
+//       case 'new_message':
+//         sockets.forEach((aSocket) => aSocket.send(`${socket.nickname}: ${message.payload}`));
+//         break;
+//       case 'nickname':
+//         socket['nickname'] = message.payload;
+//         break;
+//     }
+//   });
+// });
+
+httpServer.listen(3000, handleListen);

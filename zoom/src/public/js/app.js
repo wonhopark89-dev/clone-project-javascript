@@ -1,46 +1,53 @@
-const messageList = document.querySelector('ul');
-const nickForm = document.querySelector('#nickname');
-const messageForm = document.querySelector('#message');
+const socket = io();
 
-const socket = new WebSocket(`ws://${window.location.host}`);
+// -------------------------------------------------
+/**
+ * only websocket
+ */
 
-function makeMessage(type, payload) {
-  const msg = { type, payload };
-  return JSON.stringify(msg);
-}
+// const messageList = document.querySelector('ul');
+// const nickForm = document.querySelector('#nickname');
+// const messageForm = document.querySelector('#message');
 
-socket.addEventListener('open', () => {
-  console.log('Connected to Server ✅');
-});
+// const socket = new WebSocket(`ws://${window.location.host}`);
 
-socket.addEventListener('message', (message) => {
-  // create li
-  const li = document.createElement('li');
-  li.innerText = message.data;
-  messageList.append(li);
-});
+// function makeMessage(type, payload) {
+//   const msg = { type, payload };
+//   return JSON.stringify(msg);
+// }
 
-socket.addEventListener('close', () => {
-  console.log('Disonnected from Server ❌');
-});
+// socket.addEventListener('open', () => {
+//   console.log('Connected to Server ✅');
+// });
 
-// setTimeout(() => {
-//   socket.send('hihi');
-// }, 2000);
+// socket.addEventListener('message', (message) => {
+//   // create li
+//   const li = document.createElement('li');
+//   li.innerText = message.data;
+//   messageList.append(li);
+// });
 
-function handleSubmit(event) {
-  event.preventDefault();
-  const input = messageForm.querySelector('input');
-  socket.send(makeMessage('new_message', input.value));
-  input.value = '';
-}
+// socket.addEventListener('close', () => {
+//   console.log('Disonnected from Server ❌');
+// });
 
-function handleNickSubmit(event) {
-  event.preventDefault();
-  const input = nickForm.querySelector('input');
-  socket.send(makeMessage('nickname', input.value));
-  input.value = '';
-}
+// // setTimeout(() => {
+// //   socket.send('hihi');
+// // }, 2000);
 
-messageForm.addEventListener('submit', handleSubmit);
-nickForm.addEventListener('submit', handleNickSubmit);
+// function handleSubmit(event) {
+//   event.preventDefault();
+//   const input = messageForm.querySelector('input');
+//   socket.send(makeMessage('new_message', input.value));
+//   input.value = '';
+// }
+
+// function handleNickSubmit(event) {
+//   event.preventDefault();
+//   const input = nickForm.querySelector('input');
+//   socket.send(makeMessage('nickname', input.value));
+//   input.value = '';
+// }
+
+// messageForm.addEventListener('submit', handleSubmit);
+// nickForm.addEventListener('submit', handleNickSubmit);
