@@ -19,12 +19,13 @@ const httpServer = http.createServer(app); // http server, 필수사항 아님
 const wsServer = SocketIO(httpServer);
 
 wsServer.on('connection', (socket) => {
-  console.log(socket);
+  // console.log(socket);
 
   socket.on('enter_room', (msg, done) => {
     console.log(msg);
+    //  보안상 서버에서 실행시켜주는 함수가 아님, 프론트에서 실행
     setTimeout(() => {
-      done();
+      done('hello frontend from server');
     }, 2000);
   });
 });

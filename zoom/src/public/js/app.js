@@ -3,12 +3,17 @@ const socket = io();
 const welcome = document.getElementById('welcome');
 const form = welcome.querySelector('form');
 
+function backendDone(msg) {
+  console.log(`The backend says: `, msg);
+}
+
 function handleRoomSubmit(event) {
   event.preventDefault();
   const input = form.querySelector('input');
   // point 1: custom event
   // point 2: can use js object or function on params/args
-  socket.emit('enter_room', { payload: input.value }, () => console.log('server is done')); // send args, can send js object
+  // last args should be function
+  socket.emit('enter_room', { payload: input.value }, backendDone); // send args, can send js object
   input.value = '';
 }
 
