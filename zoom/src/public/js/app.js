@@ -2,9 +2,17 @@ const socket = io();
 
 const welcome = document.getElementById('welcome');
 const form = welcome.querySelector('form');
+const room = document.getElementById('room');
 
-function backendDone(msg) {
-  console.log(`The backend says: `, msg);
+room.hidden = true;
+
+let roomName = '';
+
+function showRoom() {
+  welcome.hidden = true;
+  room.hidden = false;
+  const h3 = room.querySelector('h3');
+  h3.innerText = `Room ${roomName}`;
 }
 
 function handleRoomSubmit(event) {
@@ -13,7 +21,8 @@ function handleRoomSubmit(event) {
   // point 1: custom event
   // point 2: can use js object or function on params/args
   // last args should be function
-  socket.emit('enter_room', { payload: input.value }, backendDone); // send args, can send js object
+  socket.emit('enter_room', { payload: input.value }, showRoom); // send args, can send js object
+  roomName = input.value;
   input.value = '';
 }
 

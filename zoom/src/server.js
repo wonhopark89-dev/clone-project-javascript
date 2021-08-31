@@ -20,13 +20,12 @@ const wsServer = SocketIO(httpServer);
 
 wsServer.on('connection', (socket) => {
   // console.log(socket);
-
-  socket.on('enter_room', (msg, done) => {
-    console.log(msg);
-    //  보안상 서버에서 실행시켜주는 함수가 아님, 프론트에서 실행
-    setTimeout(() => {
-      done('hello frontend from server');
-    }, 2000);
+  socket.onAny((event) => console.log(`Socket Event: ${event}`));
+  socket.on('enter_room', (roomName, done) => {
+    console.log(roomName);
+    // 마지막 args 는 함수, 보안상 서버에서 실행시켜주는 함수가 아님, 프론트에서 실행
+    socket.join(roomName);
+    done();
   });
 });
 
