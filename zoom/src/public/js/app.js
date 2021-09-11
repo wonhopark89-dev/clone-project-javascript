@@ -8,11 +8,30 @@ room.hidden = true;
 
 let roomName = '';
 
+function addMessage(message) {
+  const ul = room.querySelector('ul');
+  const li = document.createElement('li');
+  li.innerText = message;
+  ul.appendChild(li);
+}
+
+function handleMessageSubmit(event) {
+  event.preventDefault();
+  const input = room.querySelector('input');
+  const value = input.value;
+  socket.emit('new_message', input.value, roomName, () => {
+    addMessage(`You: ${value}`);
+  });
+  input.value = '';
+}
+
 function showRoom() {
   welcome.hidden = true;
   room.hidden = false;
   const h3 = room.querySelector('h3');
   h3.innerText = `Room ${roomName}`;
+  const form = room.querySelector('form');
+  form.addEventListener('submit', handleMessageSubmit);
 }
 
 function handleRoomSubmit(event) {
@@ -21,12 +40,22 @@ function handleRoomSubmit(event) {
   // point 1: custom event
   // point 2: can use js object or function on params/args
   // last args should be function
-  socket.emit('enter_room', { payload: input.value }, showRoom); // send args, can send js object
+  socket.emit('enter_room', input.value, showRoom); // send args, can send js object
   roomName = input.value;
   input.value = '';
 }
 
 form.addEventListener('submit', handleRoomSubmit);
+
+socket.on('welcome', () => {
+  console.log('app on');
+  addMessage('someone joined !');
+});
+socket.on('bye', () => {
+  console.log('app bye');
+  addMessage('someone left..');
+});
+socket.on('new_message', (msg) => addMessage(msg));
 
 // -------------------------------------------------
 /**
