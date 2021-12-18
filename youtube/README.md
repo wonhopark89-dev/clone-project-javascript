@@ -6,6 +6,24 @@ npm run dev
 
 ---
 
+## Route
+
+/ -> Home
+/join -> Join
+/login -> Login
+/search -> Search
+
+/users/edit -> Edit user
+/users/remove -> Remove user
+
+/videos/watch -> Watch Video
+/videos/edit -> Edit Video
+/videos/delete -> Delete Video
+/videos/comments -> Comments on a video
+/videos/comments/delete -> Delete a Comments on a video
+
+---
+
 ### Babel
 
 https://babeljs.io/setup#installation
